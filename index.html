@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="21点">
+    <meta name="theme-color" content="#0b0f19">
+    <link rel="manifest" href="./manifest.json">
+    <title>21点 皇家赌场 - Blackjack Casino</title>
+    
+    <style>
+        /* --- Self-contained Tailwind Reset & Utilities --- */
+        *, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; border-color: #e2e8f0; }
+        html { line-height: 1.5; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; line-height: inherit; }
+        h1, h2, h3, h4, p { margin: 0; }
+        ul { list-style: none; margin: 0; padding: 0; }
+        button, input { font-family: inherit; font-size: 100%; font-weight: inherit; line-height: inherit; color: inherit; margin: 0; padding: 0; }
+        button { background-color: transparent; background-image: none; cursor: pointer; }
+        svg { display: inline-block; vertical-align: middle; }
+
+        /* Layout & Display */
+        .block { display: block; }
+        .inline-block { display: inline-block; }
+        .flex { display: flex; }
+        .grid { display: grid; }
+        .hidden { display: none !important; }
+        .fixed { position: fixed; }
+        .absolute { position: absolute; }
+        .relative { position: relative; }
+        .inset-0 { inset: 0px; }
+        .inset-x-0 { left: 0px; right: 0px; }
+        .top-1\/2 { top: 50%; }
+        .top-1\/3 { top: 33.333333%; }
+        .top-4 { top: 1rem; }
+        .left-1\/2 { left: 50%; }
+        .left-6 { left: 1.5rem; }
+        .right-4 { right: 1rem; }
+        .z-0 { z-index: 0; }
+        .z-10 { z-index: 10; }
+        .z-20 { z-index: 20; }
+        .z-30 { z-index: 30; }
+        .z-50 { z-index: 50; }
+        .z-\[60\] { z-index: 60; }
+        .overflow-hidden { overflow: hidden; }
+        .overflow-x-hidden { overflow-x: hidden; }
+        .overflow-y-auto { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .pointer-events-none { pointer-events: none; }
+        .cursor-pointer { cursor: pointer; }
+
+        /* Flex & Grid */
+        .flex-1 { flex: 1 1 0%; }
+        .flex-col { flex-direction: column; }
+        .flex-wrap { flex-wrap: wrap; }
+        .items-center { align-items: center; }
+        .items-end { align-items: flex-end; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .gap-1 { gap: 0.25rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+
+        /* Spacing */
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .mr-1 { margin-right: 0.25rem; }
+        .mr-2 { margin-right: 0.5rem; }
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-5 { margin-top: 1.25rem; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .p-1 { padding: 0.25rem; }
+        .p-2 { padding: 0.5rem; }
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .px-1 { padding-left: 0.25rem; padding-right: 0.25rem; }
+        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .py-3\.5 { padding-top: 0.875rem; padding-bottom: 0.875rem; }
+        .pt-1 { padding-top: 0.25rem; }
+        .pt-4 { padding-top: 1rem; }
+        .pl-5 { padding-left: 1.25rem; }
+        .space-x-1 > :not([hidden]) ~ :not([hidden]) { margin-left: 0.25rem; }
+        .space-x-2 > :not([hidden]) ~ :not([hidden]) { margin-left: 0.5rem; }
+        .space-x-3 > :not([hidden]) ~ :not([hidden]) { margin-left: 0.75rem; }
+        .space-x-4 > :not([hidden]) ~ :not([hidden]) { margin-left: 1rem; }
+        .space-y-1 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.25rem; }
+        .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; }
+        .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+        .-space-x-8 > :not([hidden]) ~ :not([hidden]) { margin-left: -2rem; }
+
+        /* Sizing */
+        .w-4 { width: 1rem; }
+        .w-5 { width: 1.25rem; }
+        .w-7 { width: 1.75rem; }
+        .w-9 { width: 2.25rem; }
+        .w-10 { width: 2.5rem; }
+        .w-11 { width: 2.75rem; }
+        .w-12 { width: 3rem; }
+        .w-16 { width: 4rem; }
+        .w-24 { width: 6rem; }
+        .w-full { width: 100%; }
+        .max-w-md { max-width: 28rem; }
+        .max-w-lg { max-width: 32rem; }
+        .max-w-4xl { max-width: 56rem; }
+        .max-w-5xl { max-width: 64rem; }
+        .h-4 { height: 1rem; }
+        .h-5 { height: 1.25rem; }
+        .h-7 { height: 1.75rem; }
+        .h-9 { height: 2.25rem; }
+        .h-10 { height: 2.5rem; }
+        .h-11 { height: 2.75rem; }
+        .h-16 { height: 4rem; }
+        .h-24 { height: 6rem; }
+        .min-h-screen { min-height: 100vh; min-height: 100dvh; }
+        .min-h-\[110px\] { min-height: 110px; }
+        .max-h-\[780px\] { max-height: 780px; }
+        .max-h-\[88vh\] { max-height: 88vh; }
+        .aspect-\[4\/3\] { aspect-ratio: 4 / 3; }
+
+        /* Typography */
+        .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+        .text-\[10px\] { font-size: 10px; line-height: 14px; }
+        .text-\[11px\] { font-size: 11px; line-height: 15px; }
+        .text-xs { font-size: 0.75rem; line-height: 1rem; }
+        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        .text-base { font-size: 1rem; line-height: 1.5rem; }
+        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .font-extrabold { font-weight: 800; }
+        .uppercase { text-transform: uppercase; }
+        .leading-none { line-height: 1; }
+        .leading-relaxed { line-height: 1.625; }
+        .tracking-wider { letter-spacing: 0.05em; }
+        .tracking-widest { letter-spacing: 0.1em; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .list-disc { list-style-type: disc; }
+
+        /* Colors */
+        .text-white { color: #ffffff; }
+        .text-slate-100 { color: #f1f5f9; }
+        .text-slate-200 { color: #e2e8f0; }
+        .text-slate-300 { color: #cbd5e1; }
+        .text-slate-400 { color: #94a3b8; }
+        .text-slate-500 { color: #64748b; }
+        .text-slate-900 { color: #0f172a; }
+        .text-slate-950 { color: #020617; }
+        .text-red-400 { color: #f87171; }
+        .text-red-600 { color: #dc2626; }
+        .text-amber-200 { color: #fde68a; }
+        .text-amber-200\/60 { color: rgba(253, 230, 138, 0.6); }
+        .text-amber-200\/70 { color: rgba(253, 230, 138, 0.7); }
+        .text-amber-300 { color: #fcd34d; }
+        .text-amber-300\/80 { color: rgba(252, 211, 77, 0.8); }
+        .text-amber-400 { color: #fbbf24; }
+        .text-emerald-200\/60 { color: rgba(167, 243, 208, 0.6); }
+        .text-emerald-400 { color: #34d399; }
+        .text-purple-400 { color: #c084fc; }
+
+        .bg-slate-700 { background-color: #334155; }
+        .bg-slate-800 { background-color: #1e293b; }
+        .bg-slate-900 { background-color: #0f172a; }
+        .bg-slate-900\/80 { background-color: rgba(15, 23, 42, 0.8); }
+        .bg-slate-950 { background-color: #020617; }
+        .bg-slate-950\/20 { background-color: rgba(2, 6, 23, 0.2); }
+        .bg-slate-950\/80 { background-color: rgba(2, 6, 23, 0.8); }
+        .bg-slate-950\/90 { background-color: rgba(2, 6, 23, 0.9); }
+        .bg-red-600 { background-color: #dc2626; }
+        .bg-red-950\/90 { background-color: rgba(69, 10, 10, 0.9); }
+        .bg-amber-500 { background-color: #f59e0b; }
+        .bg-amber-500\/10 { background-color: rgba(245, 158, 11, 0.1); }
+        .bg-amber-500\/20 { background-color: rgba(245, 158, 11, 0.2); }
+        .bg-amber-600 { background-color: #d97706; }
+        .bg-amber-800 { background-color: #92400e; }
+        .bg-emerald-950\/90 { background-color: rgba(2, 44, 34, 0.9); }
+        .bg-blue-600 { background-color: #2563eb; }
+        .bg-purple-600 { background-color: #9333ea; }
+
+        .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to)); }
+        .from-emerald-600 { --tw-gradient-from: #059669; --tw-gradient-to: rgba(5, 150, 105, 0); }
+        .to-teal-500 { --tw-gradient-to: #14b8a6; }
+        .from-amber-500 { --tw-gradient-from: #f59e0b; --tw-gradient-to: rgba(245, 158, 11, 0); }
+        .to-amber-600 { --tw-gradient-to: #d97706; }
+
+        /* Borders & Rounded */
+        .border { border-width: 1px; }
+        .border-2 { border-width: 2px; }
+        .border-t { border-top-width: 1px; }
+        .border-b { border-bottom-width: 1px; }
+        .border-dashed { border-style: dashed; }
+        .border-slate-300 { border-color: #cbd5e1; }
+        .border-slate-500 { border-color: #64748b; }
+        .border-slate-500\/40 { border-color: rgba(100, 116, 139, 0.4); }
+        .border-slate-700 { border-color: #334155; }
+        .border-slate-800 { border-color: #1e293b; }
+        .border-red-500 { border-color: #ef4444; }
+        .border-amber-400\/50 { border-color: rgba(251, 191, 36, 0.5); }
+        .border-amber-500 { border-color: #f59e0b; }
+        .border-amber-500\/30 { border-color: rgba(245, 158, 11, 0.3); }
+        .border-amber-500\/40 { border-color: rgba(245, 158, 11, 0.4); }
+        .border-amber-500\/50 { border-color: rgba(245, 158, 11, 0.5); }
+        .border-amber-500\/80 { border-color: rgba(245, 158, 11, 0.8); }
+        .border-emerald-500 { border-color: #10b981; }
+
+        .rounded-sm { border-radius: 0.125rem; }
+        .rounded { border-radius: 0.25rem; }
+        .rounded-md { border-radius: 0.375rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-2xl { border-radius: 1rem; }
+        .rounded-\[40px\] { border-radius: 40px; }
+        .rounded-full { border-radius: 9999px; }
+
+        .ring-2 { box-shadow: 0 0 0 2px var(--tw-ring-color, rgba(251, 191, 36, 0.7)); }
+        .ring-amber-400\/70 { --tw-ring-color: rgba(251, 191, 36, 0.7); }
+
+        /* Shadows & Effects */
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1); }
+        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+        .shadow-emerald-900\/40 { box-shadow: 0 10px 15px -3px rgba(6, 78, 59, 0.4); }
+        .shadow-amber-500\/20 { box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.2); }
+        .opacity-0 { opacity: 0; }
+        .opacity-40 { opacity: 0.4; }
+        .opacity-60 { opacity: 0.6; }
+        .opacity-80 { opacity: 0.8; }
+        .opacity-100 { opacity: 1; }
+        .backdrop-blur-md { -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+
+        /* Transforms & Transitions */
+        .transform { --tw-translate-x: 0; --tw-translate-y: 0; --tw-rotate: 0; --tw-scale-x: 1; --tw-scale-y: 1; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+        .-translate-x-1\/2 { --tw-translate-x: -50%; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+        .-translate-y-1\/2 { --tw-translate-y: -50%; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+        .rotate-180 { --tw-rotate: 180deg; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+        .scale-0 { --tw-scale-x: 0; --tw-scale-y: 0; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+        .scale-100 { --tw-scale-x: 1; --tw-scale-y: 1; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+        .transition { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .transition-transform { transition-property: transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .duration-300 { transition-duration: 300ms; }
+
+        /* Interactive States */
+        .hover\:bg-slate-600:hover { background-color: #475569; }
+        .hover\:bg-slate-700:hover { background-color: #334155; }
+        .hover\:bg-blue-500:hover { background-color: #3b82f6; }
+        .hover\:bg-red-500:hover { background-color: #ef4444; }
+        .hover\:bg-amber-500:hover { background-color: #f59e0b; }
+        .hover\:bg-amber-700:hover { background-color: #b45309; }
+        .hover\:bg-purple-500:hover { background-color: #a855f7; }
+        .hover\:from-emerald-500:hover { --tw-gradient-from: #10b981; }
+        .hover\:to-teal-400:hover { --tw-gradient-to: #2dd4bf; }
+        .hover\:from-amber-400:hover { --tw-gradient-from: #fbbf24; }
+        .hover\:to-amber-500:hover { --tw-gradient-to: #f59e0b; }
+        .hover\:text-white:hover { color: #ffffff; }
+        .hover\:border-amber-300:hover { border-color: #fcd34d; }
+        .hover\:-translate-y-1:hover { --tw-translate-y: -0.25rem; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+        .group:hover .group-hover\:text-amber-200 { color: #fde68a; }
+        .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+        .focus\:border-amber-500:focus { border-color: #f59e0b; }
+        .active\:scale-95:active { --tw-scale-x: 0.95; --tw-scale-y: 0.95; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+
+        /* Responsive sm (640px) */
+        @media (min-width: 640px) {
+            .sm\:flex { display: flex; }
+            .sm\:p-2 { padding: 0.5rem; }
+            .sm\:p-4 { padding: 1rem; }
+            .sm\:px-4 { padding-left: 1rem; padding-right: 1rem; }
+            .sm\:px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+            .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .sm\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+            .sm\:py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+            .sm\:space-x-4 > :not([hidden]) ~ :not([hidden]) { margin-left: 1rem; }
+            .sm\:-space-x-12 > :not([hidden]) ~ :not([hidden]) { margin-left: -3rem; }
+            .sm\:w-14 { width: 3.5rem; }
+            .sm\:w-20 { width: 5rem; }
+            .sm\:w-28 { width: 7rem; }
+            .sm\:h-14 { height: 3.5rem; }
+            .sm\:h-28 { height: 7rem; }
+            .sm\:min-h-\[130px\] { min-height: 130px; }
+            .sm\:aspect-\[16\/10\] { aspect-ratio: 16 / 10; }
+            .sm\:text-xs { font-size: 0.75rem; line-height: 1rem; }
+            .sm\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+            .sm\:text-base { font-size: 1rem; line-height: 1.5rem; }
+            .sm\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+            .sm\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        }
+
+        /* Responsive md (768px) */
+        @media (min-width: 768px) {
+            .md\:flex-row { flex-direction: row; }
+            .md\:w-auto { width: auto; }
+            .md\:p-8 { padding: 2rem; }
+            .md\:gap-8 { gap: 2rem; }
+            .md\:space-x-8 > :not([hidden]) ~ :not([hidden]) { margin-left: 2rem; }
+            .md\:rounded-\[100px\] { border-radius: 100px; }
+            .md\:text-base { font-size: 1rem; line-height: 1.5rem; }
+            .md\:text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+            .md\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        }
+
+        /* Responsive lg (1024px) */
+        @media (min-width: 1024px) {
+            .lg\:p-6 { padding: 1.5rem; }
+        }
+
+        /* Safe Area Support for iPhone Notch / Dynamic Island */
+        header { padding-top: max(0.75rem, env(safe-area-inset-top)); }
+        footer { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow-x: hidden;
+            background-color: #0b0f19;
+        }
+        .font-cinzel {
+            font-family: 'Cinzel', "Times New Roman", Georgia, serif;
+        }
+
+        /* 3D Casino Felt Table Effect */
+        .casino-table {
+            background: radial-gradient(circle at 50% 40%, #1a5e38 0%, #0d3b22 65%, #051a0e 100%);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8), 0 0 50px rgba(0,0,0,0.9);
+            border: 16px solid #2d1810;
+            border-image: linear-gradient(to bottom right, #4a2818, #1a0d08, #5c321e) 1;
+        }
+
+        /* Leather Guard Rail Style */
+        .table-rail {
+            box-shadow: inset 0 4px 12px rgba(255, 255, 255, 0.15), inset 0 -6px 16px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        /* Card Styling & Flip Animation */
+        .card-container {
+            perspective: 1000px;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+        .card-front {
+            background: #ffffff;
+            color: #111;
+            transform: rotateY(0deg);
+        }
+        .card-back {
+            background: linear-gradient(135deg, #a81c1c 0%, #570a0a 100%);
+            border: 3px solid #ffffff;
+            transform: rotateY(180deg);
+            background-image: radial-gradient(#d63031 2px, transparent 2px), radial-gradient(#d63031 2px, #630e0e 2px);
+            background-size: 12px 12px;
+            background-position: 0 0, 6px 6px;
+        }
+
+        /* Realistic Interactive Chips */
+        .chip {
+            position: relative;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.5), inset 0 3px 3px rgba(255,255,255,0.4), inset 0 -3px 3px rgba(0,0,0,0.4);
+            border: 4px dashed rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .chip:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.6), inset 0 3px 3px rgba(255,255,255,0.5);
+        }
+        .chip:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .chip-5 { background: linear-gradient(135deg, #e53e3e, #9b2c2c); color: white; border-color: #feb2b2; }
+        .chip-25 { background: linear-gradient(135deg, #38a169, #22543d); color: white; border-color: #9ae6b4; }
+        .chip-100 { background: linear-gradient(135deg, #2d3748, #1a202c); color: white; border-color: #cbd5e0; }
+        .chip-500 { background: linear-gradient(135deg, #805ad5, #4c1d95); color: white; border-color: #e9d8fd; }
+        .chip-1000 { background: linear-gradient(135deg, #d69e2e, #744210); color: white; border-color: #fefcbf; }
+
+        /* Stacked Chips in Betting Circle */
+        .stacked-chip {
+            position: absolute;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        /* Felt Text Outline */
+        .felt-text {
+            color: rgba(255, 215, 0, 0.45);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+        .felt-line {
+            border-color: rgba(255, 215, 0, 0.35);
+        }
+
+        /* Modal Blur */
+        .backdrop-blur-custom {
+            backdrop-filter: blur(8px);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    </style>
+</head>
+<body class="min-h-screen text-slate-100 flex flex-col justify-between">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-slate-950/80 border-b border-slate-800 px-4 py-3 backdrop-blur-md flex justify-between items-center z-20">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold text-xl">
+                ♠
+            </div>
+            <div>
+                <h1 class="font-cinzel font-bold text-lg md:text-xl text-amber-400 tracking-wider">ROYAL CASINO</h1>
+                <p class="text-xs text-slate-400">Blackjack Table #01 • Dealer Stands on Soft 17</p>
+            </div>
+        </div>
+
+        <!-- Bankroll & Stats Controls -->
+        <div class="flex items-center space-x-1.5 sm:space-x-4 md:space-x-8">
+            <div class="text-right">
+                <span class="text-xs text-slate-400 uppercase tracking-wider block">玩家筹码资产</span>
+                <span id="player-bankroll" class="font-mono text-xl md:text-2xl font-bold text-emerald-400">$0</span>
+            </div>
+            <button id="btn-sound" onclick="toggleSound()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition">
+                <span id="sound-icon" class="text-slate-300"><svg class="w-4 h-4 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg></span>
+            </button>
+            <button onclick="showStatsModal()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition" title="战绩统计">
+                <svg class="w-4 h-4 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+            </button>
+            <button onclick="showRulesModal()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition" title="游戏规则">
+                <svg class="w-4 h-4 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+            </button>
+            <button onclick="showResetModal()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition" title="重新设置金额">
+                <svg class="w-4 h-4 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Casino Table Area -->
+    <main class="flex-1 flex items-center justify-center p-2 sm:p-4 lg:p-6 relative overflow-hidden">
+        
+        <!-- The Green Felt Casino Table -->
+        <div class="w-full max-w-5xl aspect-[4/3] sm:aspect-[16/10] max-h-[780px] casino-table rounded-[40px] md:rounded-[100px] relative flex flex-col justify-between p-4 md:p-8 table-rail">
+            
+            <!-- Table Markings / Text -->
+            <div class="absolute inset-x-0 top-1/3 flex flex-col items-center justify-center pointer-events-none opacity-80">
+                <div class="felt-text font-cinzel text-xs sm:text-sm md:text-base font-bold tracking-widest text-center">
+                    BLACKJACK PAYS 3 TO 2
+                </div>
+                <div class="felt-text font-cinzel text-[10px] sm:text-xs tracking-wider mt-1 text-center">
+                    Dealer Must Draw to 16 and Stand on all 17s
+                </div>
+                <div class="felt-text font-cinzel text-[10px] sm:text-xs tracking-widest mt-1 text-center border-t border-b felt-line py-0.5 px-6">
+                    INSURANCE PAYS 2 TO 1
+                </div>
+            </div>
+
+            <!-- Dealer Area -->
+            <div class="flex flex-col items-center z-10 space-y-2">
+                <!-- Shoe & Discard Tray (Visual Decorations) -->
+                <div class="absolute top-4 left-6 hidden sm:flex items-center space-x-2 opacity-60">
+                    <div class="w-12 h-16 bg-slate-900 border border-slate-700 rounded-sm shadow-md flex items-center justify-center text-xs text-slate-500 font-mono">
+                        SHOE (6)
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-semibold text-emerald-200/60 uppercase tracking-widest">庄家 Dealer</span>
+                    <span id="dealer-score" class="hidden px-2 py-0.5 text-xs font-mono font-bold bg-slate-900/80 text-amber-300 rounded border border-amber-500/30">0</span>
+                </div>
+
+                <!-- Dealer Cards Container -->
+                <div id="dealer-cards" class="flex justify-center items-center -space-x-8 sm:-space-x-12 min-h-[110px] sm:min-h-[130px] pt-1">
+                    <!-- Cards injected dynamically -->
+                </div>
+            </div>
+
+            <!-- Game Result / Notification Overlay Message inside table -->
+            <div id="game-message-container" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none transition-all duration-300 scale-0 opacity-0">
+                <div id="game-message-box" class="px-6 py-3 rounded-2xl bg-slate-950/90 border-2 border-amber-500/80 shadow-2xl flex flex-col items-center">
+                    <span id="game-message-text" class="font-cinzel text-xl sm:text-3xl font-extrabold text-amber-400 tracking-wider">PLAYER WINS</span>
+                    <span id="game-message-subtext" class="text-xs sm:text-sm text-slate-300 font-mono mt-1">+ $100</span>
+                </div>
+            </div>
+
+            <!-- Player Hands Area (dynamic: 1-3 initial hands + splits, rendered by renderPlayerHands) -->
+            <div id="player-hands" class="flex justify-center items-end gap-3 md:gap-8 z-10"></div>
+
+            <!-- Betting Spot Area -->
+            <div class="flex flex-col items-center justify-center z-20 mb-2">
+                <div class="text-xs font-semibold text-amber-300/80 mb-1 uppercase tracking-wider flex items-center space-x-1">
+                    <span>当前下注总额:</span>
+                    <span id="current-bet-display" class="font-mono text-amber-400 font-bold">$0</span>
+                </div>
+                
+                <!-- Circular Betting Zone -->
+                <div id="betting-circle" onclick="clearSpot()" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-dashed border-amber-400/50 flex flex-col items-center justify-center relative cursor-pointer hover:border-amber-300 transition group bg-slate-950/20">
+                    <span id="bet-circle-hint" class="text-[10px] sm:text-xs text-amber-200/60 font-semibold group-hover:text-amber-200 transition text-center px-2 z-0">点击筹码下注<br>(点击可清除)</span>
+                    
+                    <!-- Chips stacked here visually -->
+                    <div id="chip-stack-area" class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                        <!-- Stacked chip elements injected dynamically -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Bottom Controls & Chips Panel -->
+    <footer class="bg-slate-950 border-t border-slate-800 p-3 sm:p-4 z-20">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            <!-- Chip Selector Buttons -->
+            <div id="chips-rack" class="flex items-center justify-center space-x-2 sm:space-x-4">
+                <button type="button" onclick="addBet(5)" class="chip chip-5 w-11 h-11 sm:w-14 sm:h-14 text-xs sm:text-sm">5</button>
+                <button type="button" onclick="addBet(25)" class="chip chip-25 w-11 h-11 sm:w-14 sm:h-14 text-xs sm:text-sm">25</button>
+                <button type="button" onclick="addBet(100)" class="chip chip-100 w-11 h-11 sm:w-14 sm:h-14 text-xs sm:text-sm">100</button>
+                <button type="button" onclick="addBet(500)" class="chip chip-500 w-11 h-11 sm:w-14 sm:h-14 text-xs sm:text-sm">500</button>
+                <button type="button" onclick="addBet(1000)" class="chip chip-1000 w-11 h-11 sm:w-14 sm:h-14 text-xs sm:text-xs">1K</button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center justify-center flex-wrap gap-2 w-full md:w-auto">
+                <!-- Betting Phase Buttons -->
+                <div id="phase-betting-buttons" class="flex flex-wrap items-center justify-center gap-2">
+                    <div class="flex items-center space-x-1 px-2 py-1 rounded-lg bg-slate-900 border border-slate-800" title="同时游玩的手牌数，每手可单独下注">
+                        <span class="text-[10px] text-slate-400 mr-1">手数</span><button type="button" id="hc-1" onclick="setHandCount(1)" class="w-7 h-7 rounded-md text-xs font-bold transition">1</button><button type="button" id="hc-2" onclick="setHandCount(2)" class="w-7 h-7 rounded-md text-xs font-bold transition">2</button><button type="button" id="hc-3" onclick="setHandCount(3)" class="w-7 h-7 rounded-md text-xs font-bold transition">3</button>
+                    </div>
+                    <div id="spot-tabs" class="flex items-center gap-1" title="点击切换要下注的手牌"></div>
+                    <button id="btn-clear-bet" onclick="clearCurrentBet()" class="px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs sm:text-sm transition">
+                        清除下注
+                    </button>
+                    <button id="btn-rebet" onclick="rebetLastAmount()" class="px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 font-semibold text-xs sm:text-sm transition">
+                        重复下注
+                    </button>
+                    <button id="btn-deal" onclick="startHand()" class="px-5 py-2.5 sm:px-8 sm:py-2.5 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-sm sm:text-base shadow-lg shadow-emerald-900/40 transition transform active:scale-95">
+                        发牌 DEAL
+                    </button>
+                </div>
+
+                <!-- Playing Phase Buttons -->
+                <div id="phase-play-buttons" class="hidden flex-wrap items-center justify-center gap-2">
+                    <button id="btn-hit" onclick="playerHit()" class="px-4 py-2.5 sm:px-6 sm:py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm sm:text-base shadow-md transition transform active:scale-95">
+                        要牌 HIT
+                    </button>
+                    <button id="btn-stand" onclick="playerStand()" class="px-4 py-2.5 sm:px-6 sm:py-2.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold text-sm sm:text-base shadow-md transition transform active:scale-95">
+                        停牌 STAND
+                    </button>
+                    <button id="btn-double" onclick="playerDouble()" class="px-3 py-2.5 sm:px-5 sm:py-2.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm sm:text-base shadow-md transition transform active:scale-95">
+                        双倍 DOUBLE
+                    </button>
+                    <button id="btn-split" onclick="playerSplit()" class="hidden px-3 py-2.5 sm:px-5 sm:py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm sm:text-base shadow-md transition transform active:scale-95">
+                        分牌 SPLIT
+                    </button>
+                    <button id="btn-surrender" onclick="playerSurrender()" class="px-3 py-2.5 sm:px-5 sm:py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-sm sm:text-base border border-slate-500/40 shadow-md transition transform active:scale-95">
+                        投降 SURRENDER
+                    </button>
+                    <button id="btn-no-insurance" onclick="declineInsurance()" class="hidden px-3 py-2.5 sm:px-4 sm:py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-xs sm:text-sm border border-slate-500 transition">不买保险</button>
+                    <button id="btn-insurance" onclick="buyInsurance()" class="hidden px-3 py-2.5 sm:px-4 sm:py-2.5 rounded-lg bg-amber-800 hover:bg-amber-700 text-amber-200 font-bold text-xs sm:text-sm border border-amber-500/50 shadow-md transition">
+                        购买保险
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Initial Setup Modal -->
+    <div id="modal-setup" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-custom">
+        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl relative">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-3xl mx-auto mb-3">
+                    ♠
+                </div>
+                <h2 class="font-cinzel text-2xl font-bold text-amber-400 tracking-wider">欢迎来到 21点 皇家赌场</h2>
+                <p class="text-xs text-slate-400 mt-1">请配置您的初始游戏体验金额</p>
+            </div>
+
+            <form onsubmit="confirmInitialSetup(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">初始筹码总额 ($)</label>
+                    <input type="number" id="setup-bankroll" min="100" max="1000000" step="50" value="1000" required class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-emerald-400 font-mono text-lg font-bold focus:outline-none focus:border-amber-500 transition">
+                    <p class="text-[11px] text-slate-500 mt-1">推荐金额: $1,000 ~ $10,000</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">默认单局注额 ($)</label>
+                    <input type="number" id="setup-default-bet" min="5" max="50000" step="5" value="50" required class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-amber-400 font-mono text-lg font-bold focus:outline-none focus:border-amber-500 transition">
+                </div>
+
+                <button type="button" onclick="showRulesModal()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-amber-300 font-semibold rounded-xl text-sm transition">
+                    <svg class="w-4 h-4 mr-1 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg> 查看游戏规则
+                </button>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl shadow-lg shadow-amber-500/20 text-base transition transform active:scale-95">
+                        进入赌桌 Start Game
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stats & History Modal -->
+    <div id="modal-stats" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-custom">
+        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl relative">
+            <button onclick="closeStatsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <svg class="w-5 h-5 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <h3 class="font-cinzel text-xl font-bold text-amber-400 mb-4 flex items-center space-x-2">
+                <svg class="w-4 h-4 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                <span>战绩统计与分析</span>
+            </h3>
+
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <span class="text-[10px] text-slate-400 uppercase tracking-wider block">总进行局数</span>
+                    <span id="stat-hands-played" class="text-xl font-mono font-bold text-white">0</span>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <span class="text-[10px] text-slate-400 uppercase tracking-wider block">胜率 Win Rate</span>
+                    <span id="stat-win-rate" class="text-xl font-mono font-bold text-emerald-400">0%</span>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <span class="text-[10px] text-slate-400 uppercase tracking-wider block">历史最高资产</span>
+                    <span id="stat-peak-bankroll" class="text-xl font-mono font-bold text-amber-400">$0</span>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Blackjack 次数</span>
+                    <span id="stat-blackjacks" class="text-xl font-mono font-bold text-purple-400">0</span>
+                </div>
+            </div>
+
+            <button onclick="closeStatsModal()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm transition">
+                返回游戏
+            </button>
+        </div>
+    </div>
+
+        <!-- Rules Modal -->
+    <div id="modal-rules" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-custom">
+        <div class="w-full max-w-lg max-h-[88vh] overflow-y-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl relative">
+            <button onclick="closeRulesModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl"><svg class="w-5 h-5 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            <h3 class="font-cinzel text-xl font-bold text-amber-400 mb-4"><svg class="w-4 h-4 mr-2 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>游戏规则</h3>
+            <div class="space-y-4 text-sm text-slate-300 leading-relaxed">
+                <section><h4 class="font-bold text-amber-300 mb-1">基本规则</h4><ul class="list-disc pl-5 space-y-1">
+                    <li>使用 6 副牌。J/Q/K 记 10 点，A 记 11 点（必要时自动按 1 点计算），目标是比庄家更接近 21 点且不爆牌。</li>
+                    <li>庄家点数低于 17 必须要牌，所有 17 点（含软 17）停牌。</li>
+                    <li>起手两张牌合计 21 点为 Blackjack，赔率 3:2；普通获胜赔 1:1；平局退还本金；爆牌即输。</li>
+                </ul></section>
+                <section><h4 class="font-bold text-amber-300 mb-1">多手牌玩法</h4><ul class="list-disc pl-5 space-y-1">
+                    <li>下注阶段可在“手数”处选择 1~3 手；多手时点击“手1/手2/手3”标签切换，再点筹码即可为每一手单独下注，各手注额可以不同，且每手都必须下注。</li>
+                    <li>各手牌与庄家共用同一轮庄家牌，从左到右依次操作，并分别与庄家比点、独立结算。</li>
+                    <li>当前操作的手牌会高亮，其余手牌变淡；每手牌下方显示点数与注额，结算后显示胜负。</li>
+                    <li>“重复下注”会还原上一局的手数和每手注额。</li>
+                </ul></section>
+                <section><h4 class="font-bold text-amber-300 mb-1">玩家操作</h4><ul class="list-disc pl-5 space-y-1">
+                    <li><b>要牌 / 停牌：</b>对当前手牌要一张牌，或结束当前手牌的操作。</li>
+                    <li><b>双倍：</b>仅限某手牌的前两张牌；追加与该手相同的下注，只再拿一张牌后自动停牌（分牌后也可双倍）。</li>
+                    <li><b>分牌：</b>前两张牌点数相同（如 10 与 K 也可分）时可分牌，追加同额下注，两手各补一张牌；分牌后可继续分牌，桌面最多同时 5 手。分牌后的 A+10 算普通 21 点，不按 Blackjack 计赔。</li>
+                    <li><b>投降：</b>每手牌在拿到起手两张牌、尚未要牌时可单独投降（庄家查牌之后），退还该手一半下注，其余手牌继续；分牌产生的手牌不可投降。</li>
+                    <li><b>保险与查牌：</b>庄家明牌为 A 时，先询问是否购买保险（金额为总下注的一半，庄家有 Blackjack 赔 2:1）。庄家明牌为 A 或 10 点牌时会先“查牌”：若庄家是 Blackjack，立即翻牌结算（你的 Blackjack 平局，其余手牌输）；否则保险费输掉，游戏继续。结算弹窗的净盈亏已包含保险费。</li>
+                </ul></section>
+            </div>
+            <button onclick="closeRulesModal()" class="w-full mt-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-sm transition">我知道了</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Game Logic -->
+    <script>
+        /* --- Synthesized Web Audio API --- */
+        let audioCtx = null;
+        let isMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (AudioCtx) audioCtx = new AudioCtx();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            if (isMuted) return;
+            initAudio();
+            if (!audioCtx) return;
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'chip') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1200, now);
+                osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } else if (type === 'card') {
+                const bufferSize = audioCtx.sampleRate * 0.08;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(800, now);
+                filter.Q.setValueAtTime(3, now);
+
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+                noise.start(now);
+            } else if (type === 'win') {
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, index) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + index * 0.08);
+                    gain.gain.setValueAtTime(0.2, now + index * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.08 + 0.4);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + index * 0.08);
+                    osc.stop(now + index * 0.08 + 0.4);
+                });
+            } else if (type === 'lose') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.25);
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            }
+        }
+
+        const ICON_VOL_UP = `<svg class="w-4 h-4 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>`;
+        const ICON_VOL_MUTE = `<svg class="w-4 h-4 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+
+        function toggleSound() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('sound-icon');
+            if (isMuted) {
+                icon.className = 'text-red-400';
+                icon.innerHTML = ICON_VOL_MUTE;
+            } else {
+                icon.className = 'text-slate-300';
+                icon.innerHTML = ICON_VOL_UP;
+            }
+        }
+
+        /* --- Game State Data --- */
+        let bankroll = 1000;
+        let currentBet = 0;
+        let lastBetAmount = 50;
+        let deck = [];
+        let dealerHand = [];
+        let playerHands = [[]];
+        let playerBets = [0];
+        let activeHandIndex = 0;
+        let gameState = 'BETTING'; // BETTING, DEALING, PLAYING, DEALER_TURN, RESOLVED
+        let insuranceBet = 0;
+        let spotBets = [0, 0, 0];     // 每个下注位的注额（下注阶段）
+        let activeSpot = 0;         // 当前正在下注的位置
+        let lastSpotBets = [0, 0, 0];
+        let lastHandCount = 1;
+        let actionLockUntil = 0;    // 防止连点导致跳手
+        let handCount = 1;          // 本局起手的手牌数 (1~3)
+        let firstAction = false;    // 尚未进行任何操作（决定投降/保险是否可用）
+        const MAX_HANDS = 5;        // 分牌后桌面最多手牌数
+
+        const STORAGE_KEY = 'royal_blackjack_save_v1';
+        let stats = {
+            handsPlayed: 0,
+            wins: 0,
+            blackjacks: 0,
+            peakBankroll: 1000
+        };
+
+        function saveProgress() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    bankroll: bankroll + currentBet,
+                    lastBetAmount,
+                    stats
+                }));
+            } catch (e) {}
+        }
+
+        function loadProgress() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return false;
+                const data = JSON.parse(raw);
+                if (typeof data.bankroll === 'number' && data.bankroll >= 0) {
+                    bankroll = data.bankroll;
+                    lastBetAmount = data.lastBetAmount || 50;
+                    if (data.stats) stats = { ...stats, ...data.stats };
+                    return true;
+                }
+            } catch (e) {}
+            return false;
+        }
+
+        const SUITS = [
+            { symbol: '♠', name: 'spades', color: 'text-slate-900' },
+            { symbol: '♥', name: 'hearts', color: 'text-red-600' },
+            { symbol: '♣', name: 'clubs', color: 'text-slate-900' },
+            { symbol: '♦', name: 'diams', color: 'text-red-600' }
+        ];
+
+        const RANKS = [
+            { name: 'A', value: 11 },
+            { name: '2', value: 2 },
+            { name: '3', value: 3 },
+            { name: '4', value: 4 },
+            { name: '5', value: 5 },
+            { name: '6', value: 6 },
+            { name: '7', value: 7 },
+            { name: '8', value: 8 },
+            { name: '9', value: 9 },
+            { name: '10', value: 10 },
+            { name: 'J', value: 10 },
+            { name: 'Q', value: 10 },
+            { name: 'K', value: 10 }
+        ];
+
+        /* --- Initial Setup Handlers --- */
+        function confirmInitialSetup(e) {
+            e.preventDefault();
+            const initBankroll = parseInt(document.getElementById('setup-bankroll').value) || 1000;
+            const defaultBet = parseInt(document.getElementById('setup-default-bet').value) || 50;
+
+            bankroll = initBankroll;
+            stats.peakBankroll = bankroll;
+            lastBetAmount = Math.min(defaultBet, bankroll);
+            lastSpotBets = [lastBetAmount, 0, 0];
+            spotBets = [0, 0, 0]; currentBet = 0; activeSpot = 0; handCount = 1;
+            refreshHandCountButtons();
+
+            document.getElementById('modal-setup').classList.add('hidden');
+            updateBankrollDisplay();
+            addBet(lastBetAmount);
+            initAudio();
+        }
+
+        function showResetModal() {
+            document.getElementById('modal-setup').classList.remove('hidden');
+        }
+
+        /* --- Deck Management (6 Decks) --- */
+        function buildDeck() {
+            deck = [];
+            const numDecks = 6;
+            for (let d = 0; d < numDecks; d++) {
+                for (let s of SUITS) {
+                    for (let r of RANKS) {
+                        deck.push({ suit: s, rank: r });
+                    }
+                }
+            }
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+        }
+
+        function drawCard() {
+            if (deck.length < 20) {
+                buildDeck();
+            }
+            return deck.pop();
+        }
+
+        /* --- Betting Logic & Stack Visuals --- */
+        function isBetting() { return gameState === 'BETTING' || gameState === 'RESOLVED'; }
+
+        function addBet(amount) {
+            if (!isBetting()) return;
+            if (gameState === 'RESOLVED') { gameState = 'BETTING'; hideMessage(); }
+            if (bankroll >= amount) {
+                bankroll -= amount;
+                spotBets[activeSpot] += amount;
+                playSound('chip');
+                syncBet();
+            } else {
+                showMessage('筹码不足', `资金不足以支付 $${amount} 下注`, 'red');
+                setTimeout(hideMessage, 1500);
+            }
+        }
+
+        // 下注阶段：currentBet = 当前手数内各位置注额之和
+        function syncBet() {
+            currentBet = spotBets.slice(0, handCount).reduce((a, b) => a + b, 0);
+            updateBankrollDisplay();
+            renderChipStack();
+            renderSpotTabs();
+        }
+
+        function clearSpot() {
+            if (!isBetting() || spotBets[activeSpot] === 0) return;
+            bankroll += spotBets[activeSpot];
+            spotBets[activeSpot] = 0;
+            playSound('chip');
+            syncBet();
+        }
+
+        function renderSpotTabs() {
+            const box = document.getElementById('spot-tabs');
+            if (!box) return;
+            box.innerHTML = '';
+            if (handCount < 2) return;
+            for (let i = 0; i < handCount; i++) {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.onclick = () => { activeSpot = i; renderChipStack(); renderSpotTabs(); };
+                b.className = 'px-2 py-1 rounded-md text-[11px] font-mono transition ' +
+                    (i === activeSpot ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-800 text-slate-300 hover:bg-slate-700');
+                b.textContent = `手${i + 1} $${spotBets[i]}`;
+                box.appendChild(b);
+            }
+        }
+
+        function clearCurrentBet() {
+            if (!isBetting()) return;
+            const total = spotBets.reduce((a, b) => a + b, 0);
+            if (total === 0) return;
+            bankroll += total;
+            spotBets = [0, 0, 0];
+            playSound('chip');
+            syncBet();
+        }
+
+        function rebetLastAmount() {
+            if (!isBetting()) return;
+            if (gameState === 'RESOLVED') { gameState = 'BETTING'; hideMessage(); }
+            clearCurrentBet();
+            const total = lastSpotBets.reduce((a, b) => a + b, 0);
+            if (total > 0 && bankroll >= total) {
+                handCount = lastHandCount;
+                activeSpot = 0;
+                refreshHandCountButtons();
+                bankroll -= total;
+                spotBets = lastSpotBets.slice();
+                playSound('chip');
+                syncBet();
+            }
+        }
+
+        function updateBankrollDisplay() {
+            document.getElementById('player-bankroll').textContent = `$${bankroll.toLocaleString()}`;
+            document.getElementById('current-bet-display').textContent = `$${currentBet.toLocaleString()}`;
+            if (bankroll > stats.peakBankroll) stats.peakBankroll = bankroll;
+            saveProgress();
+        }
+
+        function setHandCount(n) {
+            if (!isBetting()) return;
+            for (let i = n; i < 3; i++) { bankroll += spotBets[i]; spotBets[i] = 0; }   // 减少手数时退回多余位置的下注
+            handCount = n;
+            activeSpot = Math.min(activeSpot, n - 1);
+            refreshHandCountButtons();
+            playSound('chip');
+            syncBet();
+        }
+
+        function refreshHandCountButtons() {
+            [1, 2, 3].forEach(i => {
+                document.getElementById('hc-' + i).className = 'w-7 h-7 rounded-md text-xs font-bold transition ' +
+                    (i === handCount ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-300 hover:bg-slate-700');
+            });
+        }
+
+        function showRulesModal() { document.getElementById('modal-rules').classList.remove('hidden'); }
+        function closeRulesModal() { document.getElementById('modal-rules').classList.add('hidden'); }
+
+        // 根据 playerHands 重建所有玩家手牌区域（开局、分牌时调用）
+        function renderPlayerHands() {
+            const box = document.getElementById('player-hands');
+            const n = playerHands.length;
+            box.innerHTML = '';
+            const scaleVal = n >= 4 ? 0.72 : n === 3 ? 0.85 : 1;
+            box.style.transform = scaleVal < 1 ? `scale(${scaleVal})` : '';
+            box.style.transformOrigin = 'bottom center';
+            playerHands.forEach((hand, i) => {
+                const wrap = document.createElement('div');
+                wrap.id = 'hand-' + i + '-container';
+                wrap.className = 'flex flex-col items-center space-y-2 transition-all duration-300 rounded-xl px-1';
+                wrap.innerHTML = `
+                    <div id="player-cards-${i}" class="flex justify-center items-center -space-x-8 sm:-space-x-12 min-h-[110px] sm:min-h-[130px]"></div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-semibold text-emerald-200/60 uppercase tracking-widest">${n > 1 ? '手牌 ' + (i + 1) : '玩家 Player'}</span>
+                        <span id="player-score-${i}" class="hidden px-2 py-0.5 text-xs font-mono font-bold bg-slate-900/80 text-amber-300 rounded border border-amber-500/30">0</span>
+                        <span id="player-bet-${i}" class="text-[10px] font-mono text-amber-200/70"></span>
+                    </div>`;
+                box.appendChild(wrap);
+                hand.forEach(c => renderCardHTML('player-cards-' + i, c, true));
+            });
+        }
+
+        function renderChipStack() {
+            const stackArea = document.getElementById('chip-stack-area');
+            const hint = document.getElementById('bet-circle-hint');
+            stackArea.innerHTML = '';
+            // 下注阶段显示当前选中位置的筹码，游戏中显示本局总下注
+            let temp = isBetting() ? spotBets[activeSpot] : currentBet;
+            hint.classList.toggle('hidden', temp > 0);
+            if (temp === 0) return;
+
+            const denom = [1000, 500, 100, 25, 5];
+            const chipsToDraw = [];
+            denom.forEach(d => {
+                const count = Math.floor(temp / d);
+                for (let i = 0; i < count; i++) chipsToDraw.push(d);
+                temp %= d;
+            });
+            chipsToDraw.slice(0, 8).reverse().forEach((val, idx) => {
+                const chipEl = document.createElement('div');
+                chipEl.className = `chip chip-${val} w-10 h-10 text-[10px] stacked-chip shadow-md`;
+                chipEl.style.transform = `translateY(-${idx * 4}px)`;
+                chipEl.textContent = val >= 1000 ? '1K' : val;
+                stackArea.appendChild(chipEl);
+            });
+        }
+
+        /* --- Card Hand Calculations --- */
+        function calculateHandScore(cards) {
+            let score = 0;
+            let aces = 0;
+
+            for (let card of cards) {
+                if (card.rank.name === 'A') {
+                    aces += 1;
+                    score += 11;
+                } else {
+                    score += card.rank.value;
+                }
+            }
+
+            while (score > 21 && aces > 0) {
+                score -= 10;
+                aces -= 1;
+            }
+
+            return { score, isSoft: aces > 0 && score <= 21 };
+        }
+
+        function isBlackjack(cards) {
+            return cards.length === 2 && !cards.fromSplit && calculateHandScore(cards).score === 21;
+        }
+
+        /* --- Game Flow & Operations --- */
+        function startHand() {
+            if (currentBet <= 0 || spotBets.slice(0, handCount).some(b => b <= 0)) {
+                showMessage(handCount > 1 ? '每手牌都需要下注' : '请先下注',
+                            handCount > 1 ? '点击“手N”标签，为每一手分别下注' : '点击下方筹码加入赌桌', 'amber');
+                return;
+            }
+            gameState = 'DEALING';
+            lastSpotBets = spotBets.slice();
+            lastHandCount = handCount;
+            playerBets = spotBets.slice(0, handCount);        // 下注时筹码已从资产扣除
+            insuranceBet = 0;
+            firstAction = false;
+            playerHands = Array.from({ length: handCount }, () => []);
+            activeHandIndex = 0;
+            dealerHand = [];
+
+            hideMessage();
+            togglePhaseUI('PLAYING');
+            ['btn-double', 'btn-split', 'btn-surrender', 'btn-insurance', 'btn-no-insurance']
+                .forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['btn-hit', 'btn-stand'].forEach(id => document.getElementById(id).classList.remove('hidden'));
+            updateBankrollDisplay();
+            renderChipStack();
+            document.getElementById('dealer-cards').innerHTML = '';
+            renderPlayerHands();
+
+            let t = 100;
+            const step = 250;
+            const dealRound = () => playerHands.forEach((_, i) => { setTimeout(() => dealPlayerCard(i), t); t += step; });
+            dealRound();
+            setTimeout(() => dealDealerCard(true), t); t += step;
+            dealRound();
+            setTimeout(() => dealDealerCard(false), t); t += step;
+            setTimeout(checkInitialHandConditions, t + 100);
+        }
+
+        function dealPlayerCard(handIdx) {
+            const card = drawCard();
+            playerHands[handIdx].push(card);
+            renderCardHTML('player-cards-' + handIdx, card, true);
+            playSound('card');
+            updateScoresDisplay();
+        }
+
+        function dealDealerCard(isFaceUp) {
+            const card = drawCard();
+            dealerHand.push({ ...card, faceUp: isFaceUp });
+            renderCardHTML('dealer-cards', card, isFaceUp);
+            playSound('card');
+            updateScoresDisplay();
+        }
+
+        function renderCardHTML(containerId, card, isFaceUp) {
+            const container = document.getElementById(containerId);
+            const cardWrapper = document.createElement('div');
+            cardWrapper.className = 'card-container w-16 h-24 sm:w-20 sm:h-28 transition-transform duration-300 transform hover:-translate-y-1';
+
+            const inner = document.createElement('div');
+            inner.className = `card-inner ${isFaceUp ? '' : 'flipped'}`;
+
+            const front = document.createElement('div');
+            front.className = `card-front p-1 sm:p-2 border border-slate-300 flex flex-col justify-between ${card.suit.color}`;
+            front.innerHTML = `
+                <div class="flex justify-between items-center leading-none">
+                    <span class="font-bold text-xs sm:text-sm font-mono">${card.rank.name}</span>
+                    <span class="text-xs">${card.suit.symbol}</span>
+                </div>
+                <div class="text-center text-lg sm:text-2xl">${card.suit.symbol}</div>
+                <div class="flex justify-between items-center leading-none rotate-180">
+                    <span class="font-bold text-xs sm:text-sm font-mono">${card.rank.name}</span>
+                    <span class="text-xs">${card.suit.symbol}</span>
+                </div>
+            `;
+
+            const back = document.createElement('div');
+            back.className = 'card-back';
+
+            inner.appendChild(front);
+            inner.appendChild(back);
+            cardWrapper.appendChild(inner);
+            container.appendChild(cardWrapper);
+        }
+
+        function updateScoresDisplay() {
+            const dScoreEl = document.getElementById('dealer-score');
+            dScoreEl.classList.remove('hidden');
+            if (gameState === 'PLAYING' || gameState === 'DEALING' || gameState === 'INSURANCE') {
+                if (dealerHand.length > 0) {
+                    dScoreEl.textContent = dealerHand[0].rank.value === 11 ? '11 / 1' : dealerHand[0].rank.value;
+                }
+            } else {
+                dScoreEl.textContent = calculateHandScore(dealerHand).score;
+            }
+
+            const multi = playerHands.length > 1;
+            playerHands.forEach((hand, idx) => {
+                const pScoreEl = document.getElementById(`player-score-${idx}`);
+                if (!pScoreEl) return;
+                pScoreEl.classList.remove('hidden');
+                const { score } = calculateHandScore(hand);
+                const done = idx < activeHandIndex || gameState === 'DEALER_TURN' || gameState === 'RESOLVED';
+                pScoreEl.textContent = score > 21 ? `${score} 爆牌`
+                    : (multi && done) ? `${score} · ${score === 21 ? '21点自动停牌' : '已停牌'}` : score;
+                const betEl = document.getElementById(`player-bet-${idx}`);
+                if (betEl) betEl.textContent = multi ? `$${playerBets[idx]}` : '';
+            });
+            updateHandHighlight();
+        }
+
+        function checkInitialHandConditions() {
+            firstAction = true;
+            const total = playerBets.reduce((a, b) => a + b, 0);
+            // 庄家明牌为 A：先询问保险，再查牌
+            if (dealerHand[0].rank.value === 11 && bankroll >= Math.floor(total / 2)) {
+                gameState = 'INSURANCE';
+                ['btn-hit', 'btn-stand', 'btn-double', 'btn-split', 'btn-surrender']
+                    .forEach(id => document.getElementById(id).classList.add('hidden'));
+                ['btn-insurance', 'btn-no-insurance'].forEach(id => document.getElementById(id).classList.remove('hidden'));
+                showMessage('庄家明牌为 A', `是否购买保险？费用 $${Math.floor(total / 2)}`, 'amber');
+                return;
+            }
+            peekForBlackjack();
+        }
+
+        function finishInsurance() {
+            hideMessage();
+            ['btn-insurance', 'btn-no-insurance'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['btn-hit', 'btn-stand'].forEach(id => document.getElementById(id).classList.remove('hidden'));
+            peekForBlackjack();
+        }
+
+        // 庄家明牌为 A 或 10 点牌时查看暗牌是否为 Blackjack
+        function peekForBlackjack() {
+            gameState = 'PLAYING';
+            if (dealerHand[0].rank.value >= 10 && isBlackjack(dealerHand)) {
+                showMessage('庄家查牌', '庄家是 Blackjack！', 'red');
+                playDealerTurn();
+                return;
+            }
+            if (insuranceBet > 0) {
+                showMessage('庄家查牌', '庄家无 Blackjack，保险费输掉', 'amber');
+                setTimeout(hideMessage, 1500);
+            }
+            advanceIfDone();
+        }
+
+        function declineInsurance() {
+            if (gameState !== 'INSURANCE') return;
+            finishInsurance();
+        }
+
+        // 跳过已经 21 点（含 Blackjack）的手牌；全部结束则进入庄家回合
+        function advanceIfDone() {
+            while (activeHandIndex < playerHands.length &&
+                   (playerHands[activeHandIndex].surrendered ||
+                    calculateHandScore(playerHands[activeHandIndex]).score >= 21)) {
+                activeHandIndex++;
+            }
+            if (activeHandIndex >= playerHands.length) {
+                activeHandIndex = playerHands.length - 1;
+                playDealerTurn();
+                return;
+            }
+            updateScoresDisplay();
+            updateActionButtons();
+        }
+
+        // 按当前活动手牌刷新可用操作按钮
+        function updateActionButtons() {
+            const h = playerHands[activeHandIndex];
+            if (!h || gameState !== 'PLAYING') return;
+            const bet = playerBets[activeHandIndex];
+            const two = h.length === 2;
+            const show = (id, on) => document.getElementById(id).classList.toggle('hidden', !on);
+            show('btn-double', two && bankroll >= bet);
+            show('btn-split', two && h[0].rank.value === h[1].rank.value && bankroll >= bet && playerHands.length < MAX_HANDS);
+            show('btn-surrender', two && !h.fromSplit);
+        }
+
+        /* --- Player Controls --- */
+        function locked() {
+            const n = Date.now();
+            if (n < actionLockUntil) return true;
+            actionLockUntil = n + 250;
+            return false;
+        }
+
+        function playerHit() {
+            if (gameState !== 'PLAYING' || locked()) return;
+            firstAction = false;
+            dealPlayerCard(activeHandIndex);
+            if (calculateHandScore(playerHands[activeHandIndex]).score >= 21) {
+                nextHandOrStand();
+            } else {
+                updateActionButtons();
+            }
+        }
+
+        function playerStand() {
+            if (gameState !== 'PLAYING' || locked()) return;
+            firstAction = false;
+            nextHandOrStand();
+        }
+
+        function nextHandOrStand() {
+            activeHandIndex++;
+            advanceIfDone();
+        }
+
+        function playerSurrender() {
+            if (gameState !== 'PLAYING' || locked()) return;
+            const h = playerHands[activeHandIndex];
+            if (!h || h.length !== 2 || h.fromSplit) return;   // 仅限该手牌的首次决策，分牌后不可投降
+            firstAction = false;
+            h.surrendered = true;                              // 结算时退还一半注额
+            playSound('chip');
+            nextHandOrStand();
+        }
+
+        function playerDouble() {
+            if (gameState !== 'PLAYING') return;
+            if (locked()) return;
+            firstAction = false;
+            const currentHandBet = playerBets[activeHandIndex];
+
+            if (bankroll < currentHandBet) {
+                showMessage('资金不足', '无法增加双倍下注', 'amber');
+                return;
+            }
+
+            bankroll -= currentHandBet;
+            playerBets[activeHandIndex] += currentHandBet;
+            currentBet += currentHandBet;
+            updateBankrollDisplay();
+            renderChipStack();
+            playSound('chip');
+
+            dealPlayerCard(activeHandIndex);
+            nextHandOrStand();
+        }
+
+        function playerSplit() {
+            if (gameState !== 'PLAYING' || locked()) return;
+            const i = activeHandIndex, h = playerHands[i], bet = playerBets[i];
+            if (h.length !== 2 || h[0].rank.value !== h[1].rank.value || playerHands.length >= MAX_HANDS) return;
+            if (bankroll < bet) {
+                showMessage('资金不足', '无法分牌', 'amber');
+                setTimeout(hideMessage, 1500);
+                return;
+            }
+            firstAction = false;
+            bankroll -= bet;
+            currentBet += bet;
+            updateBankrollDisplay();
+            renderChipStack();
+            playSound('chip');
+
+            const nh = [h.pop()];
+            h.fromSplit = true;
+            nh.fromSplit = true;
+            playerHands.splice(i + 1, 0, nh);                 // 新手牌插在原手牌右侧
+            playerBets.splice(i + 1, 0, bet);
+            renderPlayerHands();
+            dealPlayerCard(i);
+            dealPlayerCard(i + 1);
+            advanceIfDone();
+        }
+
+        function buyInsurance() {
+            if (gameState !== 'INSURANCE') return;
+            const insAmount = Math.floor(playerBets.reduce((a, b) => a + b, 0) / 2);
+            if (bankroll >= insAmount) {
+                bankroll -= insAmount;
+                insuranceBet = insAmount;
+                updateBankrollDisplay();
+                playSound('chip');
+                finishInsurance();
+            }
+        }
+
+        function updateHandHighlight() {
+            // 仅"多手牌 + 玩家操作阶段"才突出当前手牌；其余阶段全部恢复正常，
+            // 且手牌容器每局重建，不会再残留上一局的半透明样式。
+            const multiPlaying = playerHands.length > 1 && gameState === 'PLAYING';
+            playerHands.forEach((_, i) => {
+                const el = document.getElementById(`hand-${i}-container`);
+                if (!el) return;
+                const active = multiPlaying && i === activeHandIndex;
+                el.style.opacity = (multiPlaying && !active) ? '0.5' : '1';
+                el.classList.toggle('ring-2', active);
+                el.classList.toggle('ring-amber-400/70', active);
+            });
+        }
+
+        /* --- Dealer Automation & Settlement --- */
+        function playDealerTurn() {
+            gameState = 'DEALER_TURN';
+
+            const dContainer = document.getElementById('dealer-cards');
+            const hiddenCardInner = dContainer.querySelectorAll('.card-inner')[1];
+            if (hiddenCardInner) {
+                hiddenCardInner.classList.remove('flipped');
+            }
+            if (dealerHand[1]) dealerHand[1].faceUp = true;
+            updateScoresDisplay();
+
+            const dealerDrawStep = () => {
+                const { score } = calculateHandScore(dealerHand);
+                const needDraw = playerHands.some(hd => !hd.surrendered && calculateHandScore(hd).score <= 21);
+                if (score < 17 && needDraw) {
+                    dealDealerCard(true);
+                    setTimeout(dealerDrawStep, 600);
+                } else {
+                    setTimeout(resolveGameOutcome, 500);
+                }
+            };
+
+            setTimeout(dealerDrawStep, 600);
+        }
+
+        function resolveGameOutcome() {
+            gameState = 'RESOLVED';
+            const dealerScore = calculateHandScore(dealerHand).score;
+            const dealerHasBJ = isBlackjack(dealerHand);
+            let totalPayout = 0;
+            let netProfit = 0;
+
+            stats.handsPlayed += playerHands.length;
+
+            if (dealerHasBJ && insuranceBet > 0) {
+                totalPayout += insuranceBet * 3;
+            }
+
+            playerHands.forEach((hand, idx) => {
+                const pScore = calculateHandScore(hand).score;
+                const pHasBJ = isBlackjack(hand);
+                const handBet = playerBets[idx];
+
+                if (hand.surrendered) {
+                    totalPayout += Math.floor(handBet / 2);
+                    return;
+                }
+                if (pScore > 21) {
+                    // Bust
+                } else if (pHasBJ && !dealerHasBJ) {
+                    const winAmt = handBet + (handBet * 1.5);
+                    totalPayout += winAmt;
+                    stats.wins++;
+                    stats.blackjacks++;
+                } else if (dealerScore > 21 || pScore > dealerScore) {
+                    totalPayout += handBet * 2;
+                    stats.wins++;
+                } else if (pScore === dealerScore) {
+                    totalPayout += handBet;
+                }
+            });
+
+            if (playerHands.length > 1 || playerHands[0].surrendered) {   // 在每手点数旁标注结果
+                playerHands.forEach((hand, idx) => {
+                    const el = document.getElementById(`player-score-${idx}`);
+                    const s = calculateHandScore(hand).score;
+                    const tag = hand.surrendered ? '投降' : s > 21 ? '爆牌' : (isBlackjack(hand) && !dealerHasBJ) ? 'BJ'
+                        : (dealerScore > 21 || s > dealerScore) ? '胜' : s === dealerScore ? '平' : '负';
+                    if (el) el.textContent = `${s} · ${tag}`;
+                });
+            }
+
+            netProfit = totalPayout - currentBet - insuranceBet;   // 保险费已在购买时扣除，需计入净盈亏
+            bankroll += totalPayout;
+            updateBankrollDisplay();
+
+            if (playerHands.every(hd => hd.surrendered)) {
+                playSound('chip');
+                showMessage('玩家投降 (SURRENDER)', `退还 50% 下注: $${totalPayout.toLocaleString()}`, 'amber');
+            } else if (netProfit > 0) {
+                playSound('win');
+                showMessage('恭喜获胜！', `+ $${netProfit.toLocaleString()}`, 'emerald');
+            } else if (netProfit < 0) {
+                playSound('lose');
+                showMessage('本局遗憾失败', `- $${Math.abs(netProfit).toLocaleString()}`, 'red');
+            } else {
+                playSound('chip');
+                showMessage('平局 (PUSH)', '退还本金', 'amber');
+            }
+
+            togglePhaseUI('BETTING');
+            currentBet = 0;
+            spotBets = [0, 0, 0];
+            renderChipStack();
+            renderSpotTabs();
+        }
+
+        /* --- UI Render Helpers --- */
+        function togglePhaseUI(phase) {
+            if (phase === 'PLAYING') {
+                document.getElementById('phase-betting-buttons').classList.add('hidden');
+                document.getElementById('phase-play-buttons').classList.remove('hidden');
+                document.getElementById('phase-play-buttons').classList.add('flex');
+                document.getElementById('chips-rack').classList.add('opacity-40', 'pointer-events-none');
+            } else {
+                document.getElementById('phase-betting-buttons').classList.remove('hidden');
+                document.getElementById('phase-play-buttons').classList.add('hidden');
+                document.getElementById('phase-play-buttons').classList.remove('flex');
+                document.getElementById('chips-rack').classList.remove('opacity-40', 'pointer-events-none');
+            }
+        }
+
+        function showMessage(title, subtext, color) {
+            const container = document.getElementById('game-message-container');
+            const box = document.getElementById('game-message-box');
+            const titleEl = document.getElementById('game-message-text');
+            const subEl = document.getElementById('game-message-subtext');
+
+            titleEl.textContent = title;
+            subEl.textContent = subtext;
+
+            if (color === 'emerald') {
+                box.className = 'px-6 py-3 rounded-2xl bg-emerald-950/90 border-2 border-emerald-500 shadow-2xl flex flex-col items-center';
+                titleEl.className = 'font-cinzel text-xl sm:text-3xl font-extrabold text-emerald-400 tracking-wider';
+            } else if (color === 'red') {
+                box.className = 'px-6 py-3 rounded-2xl bg-red-950/90 border-2 border-red-500 shadow-2xl flex flex-col items-center';
+                titleEl.className = 'font-cinzel text-xl sm:text-3xl font-extrabold text-red-400 tracking-wider';
+            } else {
+                box.className = 'px-6 py-3 rounded-2xl bg-slate-950/90 border-2 border-amber-500 shadow-2xl flex flex-col items-center';
+                titleEl.className = 'font-cinzel text-xl sm:text-3xl font-extrabold text-amber-400 tracking-wider';
+            }
+
+            container.classList.remove('scale-0', 'opacity-0');
+            container.classList.add('scale-100', 'opacity-100');
+        }
+
+        function hideMessage() {
+            const container = document.getElementById('game-message-container');
+            container.classList.remove('scale-100', 'opacity-100');
+            container.classList.add('scale-0', 'opacity-0');
+        }
+
+        function showStatsModal() {
+            document.getElementById('stat-hands-played').textContent = stats.handsPlayed;
+            const rate = stats.handsPlayed > 0 ? Math.round((stats.wins / stats.handsPlayed) * 100) : 0;
+            document.getElementById('stat-win-rate').textContent = `${rate}%`;
+            document.getElementById('stat-peak-bankroll').textContent = `$${stats.peakBankroll.toLocaleString()}`;
+            document.getElementById('stat-blackjacks').textContent = stats.blackjacks;
+
+            document.getElementById('modal-stats').classList.remove('hidden');
+        }
+
+        function closeStatsModal() {
+            document.getElementById('modal-stats').classList.add('hidden');
+        }
+
+        window.onload = function() {
+            buildDeck();
+            renderSpotTabs();
+            refreshHandCountButtons();
+            if (loadProgress() && bankroll > 0) {
+                document.getElementById('modal-setup').classList.add('hidden');
+                updateBankrollDisplay();
+                const initBet = Math.min(lastBetAmount, bankroll);
+                if (initBet > 0) addBet(initBet);
+            }
+        };
+    </script>
+</body>
+</html>
